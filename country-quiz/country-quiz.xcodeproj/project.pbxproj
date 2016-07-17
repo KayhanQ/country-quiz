@@ -14,6 +14,9 @@
 		0486A3AD1D3977160016754C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0486A3AB1D3977160016754C /* LaunchScreen.storyboard */; };
 		0486A3B81D3977160016754C /* country_quizTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486A3B71D3977160016754C /* country_quizTests.swift */; };
 		0486A3C31D3977160016754C /* country_quizUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486A3C21D3977160016754C /* country_quizUITests.swift */; };
+		0486A3D51D3C120B0016754C /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486A3D41D3C120B0016754C /* GameViewController.swift */; };
+		0486A3DF1D3C27D40016754C /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486A3DE1D3C27D40016754C /* GameState.swift */; };
+		0486A3E31D3C28220016754C /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0486A3E21D3C28220016754C /* Country.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +50,9 @@
 		0486A3BE1D3977160016754C /* country-quizUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "country-quizUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0486A3C21D3977160016754C /* country_quizUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = country_quizUITests.swift; sourceTree = "<group>"; };
 		0486A3C41D3977160016754C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0486A3D41D3C120B0016754C /* GameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		0486A3DE1D3C27D40016754C /* GameState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GameState.swift; path = ../GameState.swift; sourceTree = "<group>"; };
+		0486A3E21D3C28220016754C /* Country.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +105,8 @@
 			children = (
 				0486A3A21D3977160016754C /* AppDelegate.swift */,
 				0486A3A41D3977160016754C /* ViewController.swift */,
+				0486A3E11D3C28110016754C /* View Controller */,
+				0486A3E01D3C28070016754C /* Models */,
 				0486A3A61D3977160016754C /* Main.storyboard */,
 				0486A3A91D3977160016754C /* Assets.xcassets */,
 				0486A3AB1D3977160016754C /* LaunchScreen.storyboard */,
@@ -123,6 +131,23 @@
 				0486A3C41D3977160016754C /* Info.plist */,
 			);
 			path = "country-quizUITests";
+			sourceTree = "<group>";
+		};
+		0486A3E01D3C28070016754C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0486A3DE1D3C27D40016754C /* GameState.swift */,
+				0486A3E21D3C28220016754C /* Country.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		0486A3E11D3C28110016754C /* View Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0486A3D41D3C120B0016754C /* GameViewController.swift */,
+			);
+			name = "View Controller";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +282,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0486A3A51D3977160016754C /* ViewController.swift in Sources */,
+				0486A3D51D3C120B0016754C /* GameViewController.swift in Sources */,
+				0486A3DF1D3C27D40016754C /* GameState.swift in Sources */,
+				0486A3E31D3C28220016754C /* Country.swift in Sources */,
 				0486A3A31D3977160016754C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,6 +512,7 @@
 				0486A3C91D3977160016754C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0486A3CA1D3977160016754C /* Build configuration list for PBXNativeTarget "country-quizTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +521,7 @@
 				0486A3CC1D3977160016754C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0486A3CD1D3977160016754C /* Build configuration list for PBXNativeTarget "country-quizUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +530,7 @@
 				0486A3CF1D3977160016754C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
