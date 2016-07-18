@@ -9,7 +9,21 @@
 import Foundation
 
 class Country {
+    
+    enum GameComparator: Int {
+        case Population = 0
+        case Area = 1
+        case BorderLength = 2
+    }
+    
     // TODO
     // Make all properties we need for game name, population, area, borderLength
     // Make init(name: String)
+    
+    
+    // TODO
+    func isGreaterThanCountry(country: Country, forComparator comparator: GameComparator) {
+        
+    }
+    
 }
