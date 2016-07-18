@@ -103,14 +103,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bottomCountryView" destination="JrH-fw-fxJ" id="xGj-lO-AUY"/>
-                        <outlet property="topCountryView" destination="fSt-c0-mDR" id="nBv-iu-p8U"/>
+                        <outlet property="bottomRow" destination="JrH-fw-fxJ" id="Zce-x3-ArL"/>
+                        <outlet property="topRow" destination="fSt-c0-mDR" id="0VE-JR-dqE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zeL-fo-nd7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="SaH-Gz-0UR">
                     <connections>
-                        <action selector="topCountryViewTapped:" destination="dxf-Gj-buu" id="f9z-u0-pfj"/>
+                        <action selector="topRowTapped:" destination="dxf-Gj-buu" id="fUi-em-7k5"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>

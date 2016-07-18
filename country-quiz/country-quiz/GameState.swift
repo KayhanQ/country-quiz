@@ -25,8 +25,9 @@ class GameState {
     func addRandomCountryAtRow(row: Int) {
         let c = Country()
         rows[row].append(c)
+        let index = rows[row].count - 1
         
-        let array : [AnyObject] = [row, "country name from country"]
+        let array : [AnyObject] = [row, index, c]
 
         NSNotificationCenter.defaultCenter().postNotificationName("countryAdded", object: array)
     }
@@ -39,6 +40,10 @@ class GameState {
 
         NSNotificationCenter.defaultCenter().postNotificationName("countryRemoved", object: array)
 
+    }
+    
+    func numChildrenInRow(row: Int) -> Int {
+        return rows[row].count
     }
     
     

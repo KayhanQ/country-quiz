@@ -10,10 +10,15 @@ import UIKit
 
 class GameViewController: UIViewController {
 
-    @IBOutlet weak var topCountryView: UIView!
-    @IBOutlet weak var bottomCountryView: UIView!
+    @IBOutlet weak var topRow: UIView!
+    @IBOutlet weak var bottomRow: UIView!
+
+    enum Direction : Int {
+        case OffScreen = 0
+        case OnScreen = 1
+    }
     
-    var countryViews = [UIView]()
+    var rowViews = [UIView]()
     
     // when a country is moving on/off screen we should make the screen not tappable
     var tappable: Bool = false
@@ -23,13 +28,12 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        gameState.addRandomCountryAtRow(0)
-        countryViews.append(topCountryView)
-        countryViews.append(bottomCountryView)
+        rowViews.append(topRow)
+        rowViews.append(bottomRow)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.countryAddedWithNotification(_:)), name: "countryAdded", object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.countryRemovedWithNotification), name: "countryRemoved", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameViewController.countryRemovedWithNotification(_:)), name: "countryRemoved", object: nil)
         
         // start game after a delay or animation
         NSTimer.scheduledTimerWithTimeInterval(NSTimeInterval(1), target: self, selector: #selector(GameViewController.startGame), userInfo: nil, repeats: false)
@@ -37,57 +41,96 @@ class GameViewController: UIViewController {
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        
+    }
+    
     // Gamestate informs us if a country has been added and we update the view
     func countryAddedWithNotification(notification: NSNotification) {
         let array =  notification.object as! [AnyObject]
         let row = array[0] as! Int
-        let country = array[1] as! String
+        let index = array[1] as! Int
+        let country = array[2] as! Country
         
-        let countryView = countryViews[row]
-        createNextCountryView(countryView, country: country)
+        let rowView = rowViews[row]
+        
+        createCountryViewIn(rowView, forCountry: country)
+        
+        // if there is only one child we are at the start of the game so we must move the country view on screen
+        if gameState.numChildrenInRow(row) == 1 {
+            animateCountryViewAtIndex(index, inRow: row, inDirection: .OnScreen)
+        }
     }
     
     // Gamestate informs us if a country has been removed and we update the view
     func countryRemovedWithNotification(notification: NSNotification) {
+        print("removing Country")
         let array =  notification.object as! [AnyObject]
         let row = array[0] as! Int
         let index = array[1] as! Int
         
-        let countryView = countryViews[row]
-
-        for (childIndex, view) in countryView.subviews.enumerate() {
-            if index == childIndex {
-                view.removeFromSuperview()
-            }
-        }
+        let rowView = rowViews[row]
+        let countryView = getSubviewAtIndex(index, inParent: rowView)!
+        countryView.removeFromSuperview()
     }
-
     
     func startGame() {
         gameState.addRandomCountryAtRow(0)
+        gameState.addRandomCountryAtRow(0)
+
+        gameState.addRandomCountryAtRow(1)
         gameState.addRandomCountryAtRow(1)
     }
     
     
-    func animateMoveCountry() {
+    func animateCountryViewAtIndex(index: Int, inRow row: Int, inDirection direction: Direction) {
+        var x: CGFloat = 0
+        switch direction {
+        case .OnScreen:
+            x = 0
+        case . OffScreen:
+            x = -view.frame.size.width
+        }
+        
+        let countryView = getSubviewAtIndex(index, inParent: rowViews[row])!
 
+        UIView.animateWithDuration(0.8, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 10.0, options: UIViewAnimationOptions(), animations: { () -> Void in
+            countryView.frame.origin = CGPoint(x: x, y: countryView.frame.origin.y)
+            }, completion: {(_) -> Void in
+                if direction == .OnScreen {
+                    
+                } else if direction == .OffScreen {
+                    self.gameState.removeCountryFromRow(row, atIndex: index)
+                    self.gameState.addRandomCountryAtRow(row)
+                }
+            })
+    
     }
     
-    func createNextCountryView(parentView: UIView, country: String) {
+    func createCountryViewIn(parentView: UIView, forCountry country: Country) {
         let shapeView = getShapeView(parentView.frame.size, country: country)
-        //shapeView.frame.origin.x = parentView.frame.size.width
-        
-        //shapeView.topAnchor.constraintLessThanOrEqualToAnchor(view.topAnchor, constant: 20)
-
-        parentView.addSubview(shapeView)
+        shapeView.frame.origin.x = parentView.frame.size.width
         
         // TODO
         // add the label with the name of the Country
         // add constraints to everything so we can play in landscape (this can be done later)
+        //shapeView.topAnchor.constraintLessThanOrEqualToAnchor(view.topAnchor, constant: 20)
+
+        parentView.addSubview(shapeView)
+        
+    }
+    
+    func rowNumberForRowView(rowView: UIView) -> Int {
+        for (childIndex, view) in rowViews.enumerate() {
+            if rowView == view {
+                return childIndex
+            }
+        }
+        return -1
     }
     
     // will draw from country shape data
-    func getShapeView(size: CGSize, country: String) -> UIView {
+    func getShapeView(size: CGSize, country: Country) -> UIView {
         let width = size.width
         let height = size.height
         
@@ -118,14 +161,24 @@ class GameViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func topCountryViewTapped(sender: AnyObject) {
-        
-        gameState.removeCountryFromRow(0, atIndex: 0)
+
+    @IBAction func topRowTapped(sender: AnyObject) {
+        print("top row tapped")
+        animateCountryViewAtIndex(0, inRow: 0, inDirection: .OffScreen)
+        animateCountryViewAtIndex(1, inRow: 0, inDirection: .OnScreen)
 
     }
     
     
     
+    func getSubviewAtIndex(index: Int, inParent parentView: UIView) -> UIView? {
+        for (childIndex, view) in parentView.subviews.enumerate() {
+            if index == childIndex {
+                return view
+            }
+        }
+        return nil
+    }
 
     /*
     // MARK: - Navigation
