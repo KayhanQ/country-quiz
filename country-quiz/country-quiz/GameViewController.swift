@@ -102,7 +102,6 @@ class GameViewController: UIViewController {
                     self.gameState.addRandomCountryAtRow(row)
                 }
             })
-    
     }
     
     func createCountryViewIn(parentView: UIView, forCountry country: Country) {

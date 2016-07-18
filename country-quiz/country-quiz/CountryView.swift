@@ -10,25 +10,41 @@ import UIKit
 
 class CountryView: UIView {
     
+    var country: Country?
     
     init(frame: CGRect, country: Country) {
         super.init(frame: frame)
+        self.country = country
+
+        setup()
+    }
+    
+    func setup() {
+        //self.backgroundColor = UIColor.yellowColor()
         
+        let container = UILayoutGuide()
+        self.addLayoutGuide(container)
+        
+        let shapeViewFrame = CGRect(x: 20, y: 0, width: self.frame.width-20, height: self.frame.height-20)
+        let shapeView = getShapeView(shapeViewFrame)
+        shapeView.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(shapeView)
+
         // TODO
         // add the label with the name of the Country
         // add constraints to everything so we can play in landscape (this can be done later)
-        //shapeView.topAnchor.constraintLessThanOrEqualToAnchor(view.topAnchor, constant: 20)
-        
-        addShapeView(frame.size, country: country)
+        shapeView.topAnchor.constraintLessThanOrEqualToAnchor(self.layoutMarginsGuide.topAnchor).active = true
+        shapeView.trailingAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.trailingAnchor).active = true
+        shapeView.leadingAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.leadingAnchor).active = true
+        shapeView.bottomAnchor.constraintEqualToAnchor(self.layoutMarginsGuide.trailingAnchor, constant: 20.0).active = true
+
+//        shapeView.topAnchor.constraintEqualToAnchor(container.topAnchor, constant: 40).active = true
+
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func addShapeView(size: CGSize, country: Country) {
-        let width = size.width
-        let height = size.height
+    func getShapeView(frame: CGRect) -> UIView {
+        let width = frame.size.width
+        let height = frame.size.height
         
         let shape = CAShapeLayer()
         shape.opacity = 0.5
@@ -46,6 +62,13 @@ class CountryView: UIView {
         path.closePath()
         shape.path = path.CGPath
         
-        self.layer.addSublayer(shape)
+        let shapeView = UIView(frame: frame)
+        shapeView.layer.addSublayer(shape)
+        
+        return shapeView
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }

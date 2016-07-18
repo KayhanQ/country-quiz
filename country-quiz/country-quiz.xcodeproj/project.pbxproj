@@ -107,7 +107,7 @@
 			children = (
 				0486A3A21D3977160016754C /* AppDelegate.swift */,
 				0486A3A41D3977160016754C /* ViewController.swift */,
-				0486A3E11D3C28110016754C /* View Controller */,
+				0486A3E11D3C28110016754C /* View Controllers */,
 				0486A3E01D3C28070016754C /* Models */,
 				0486A3E61D3CCC0A0016754C /* Views */,
 				0486A3A91D3977160016754C /* Assets.xcassets */,
@@ -143,12 +143,12 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		0486A3E11D3C28110016754C /* View Controller */ = {
+		0486A3E11D3C28110016754C /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				0486A3D41D3C120B0016754C /* GameViewController.swift */,
 			);
-			name = "View Controller";
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 		0486A3E61D3CCC0A0016754C /* Views */ = {
