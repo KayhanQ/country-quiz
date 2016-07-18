@@ -20,9 +20,6 @@ class GameViewController: UIViewController {
     
     var rowViews = [UIView]()
     
-    // when a country is moving on/off screen we should make the screen not tappable
-    var tappable: Bool = false
-    
     var gameState = GameState()
     
     override func viewDidLoad() {
@@ -45,6 +42,15 @@ class GameViewController: UIViewController {
         
     }
     
+    func startGame() {
+
+        gameState.addRandomCountryAtRow(0)
+        gameState.addRandomCountryAtRow(0)
+        
+        gameState.addRandomCountryAtRow(1)
+        gameState.addRandomCountryAtRow(1)
+    }
+    
     // Gamestate informs us if a country has been added and we update the view
     func countryAddedWithNotification(notification: NSNotification) {
         let array =  notification.object as! [AnyObject]
@@ -55,6 +61,7 @@ class GameViewController: UIViewController {
         let rowView = rowViews[row]
         
         createCountryViewIn(rowView, forCountry: country)
+        
         
         // if there is only one child we are at the start of the game so we must move the country view on screen
         if gameState.numChildrenInRow(row) == 1 {
@@ -73,15 +80,6 @@ class GameViewController: UIViewController {
         let countryView = getSubviewAtIndex(index, inParent: rowView)!
         countryView.removeFromSuperview()
     }
-    
-    func startGame() {
-        gameState.addRandomCountryAtRow(0)
-        gameState.addRandomCountryAtRow(0)
-
-        gameState.addRandomCountryAtRow(1)
-        gameState.addRandomCountryAtRow(1)
-    }
-    
     
     func animateCountryViewAtIndex(index: Int, inRow row: Int, inDirection direction: Direction) {
         var x: CGFloat = 0
@@ -108,16 +106,9 @@ class GameViewController: UIViewController {
     }
     
     func createCountryViewIn(parentView: UIView, forCountry country: Country) {
-        let shapeView = getShapeView(parentView.frame.size, country: country)
-        shapeView.frame.origin.x = parentView.frame.size.width
-        
-        // TODO
-        // add the label with the name of the Country
-        // add constraints to everything so we can play in landscape (this can be done later)
-        //shapeView.topAnchor.constraintLessThanOrEqualToAnchor(view.topAnchor, constant: 20)
-
-        parentView.addSubview(shapeView)
-        
+        let frame = CGRect(origin: CGPointMake(parentView.frame.origin.x + parentView.frame.size.width, 0) , size: parentView.frame.size)
+        let countryView = CountryView(frame: frame, country: country)
+        parentView.addSubview(countryView)
     }
     
     func rowNumberForRowView(rowView: UIView) -> Int {
@@ -128,39 +119,6 @@ class GameViewController: UIViewController {
         }
         return -1
     }
-    
-    // will draw from country shape data
-    func getShapeView(size: CGSize, country: Country) -> UIView {
-        let width = size.width
-        let height = size.height
-        
-        let shape = CAShapeLayer()
-        shape.opacity = 0.5
-        shape.lineWidth = 2
-        shape.lineJoin = kCALineJoinMiter
-        shape.strokeColor = UIColor(hue: 0.786, saturation: 0.79, brightness: 0.53, alpha: 1.0).CGColor
-        shape.fillColor = UIColor(hue: 0.786, saturation: 0.15, brightness: 0.89, alpha: 1.0).CGColor
-        
-        let path = UIBezierPath()
-        path.moveToPoint(CGPointMake(0, 0))
-        path.addLineToPoint(CGPointMake(width, 0))
-        path.addLineToPoint(CGPointMake(240, 50))
-        path.addLineToPoint(CGPointMake(0, height))
-        path.addLineToPoint(CGPointMake(100, 150))
-        path.closePath()
-        shape.path = path.CGPath
-        
-        let view: UIView = UIView(frame: CGRect(origin: CGPoint.zero, size: size))
-        view.layer.addSublayer(shape)
-
-        return view
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 
     @IBAction func topRowTapped(sender: AnyObject) {
         print("top row tapped")
@@ -169,6 +127,11 @@ class GameViewController: UIViewController {
 
     }
     
+    @IBAction func bottomRowTapped(sender: AnyObject) {
+        print("bot row tapped")
+        animateCountryViewAtIndex(0, inRow: 1, inDirection: .OffScreen)
+        animateCountryViewAtIndex(1, inRow: 1, inDirection: .OnScreen)
+    }
     
     
     func getSubviewAtIndex(index: Int, inParent parentView: UIView) -> UIView? {
@@ -179,15 +142,9 @@ class GameViewController: UIViewController {
         }
         return nil
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
-    */
-
 }

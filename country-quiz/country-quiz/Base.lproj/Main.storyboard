@@ -87,6 +87,10 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JrH-fw-fxJ">
                                         <rect key="frame" x="0.0" y="250" width="600" height="250"/>
                                         <color key="backgroundColor" red="0.5339964492" green="0.68427611219999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="jTk-JV-hMz" appends="YES" id="MeF-SK-D0Y"/>
+                                        </connections>
                                     </view>
                                 </subviews>
                             </stackView>
@@ -111,6 +115,11 @@
                 <tapGestureRecognizer id="SaH-Gz-0UR">
                     <connections>
                         <action selector="topRowTapped:" destination="dxf-Gj-buu" id="fUi-em-7k5"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="jTk-JV-hMz">
+                    <connections>
+                        <action selector="bottomRowTapped:" destination="dxf-Gj-buu" id="OuR-aK-cGj"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
